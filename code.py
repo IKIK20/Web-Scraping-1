@@ -17,24 +17,16 @@ def scrape():
     soup= BeautifulSoup(browser.page_source, "html.parser")
         #temp_25_list = []
     star_table = soup.find('table')
-    star_table.find_all('tr')
 
     for ul_tag in soup.find_all("tr"): 
         td_tags= ul_tag.find_all("td")
         temp_list = []
             
-        for j, td_tag in enumerate(td_tags):
-            if j==0:
-                temp_list.append(td_tag.find_all("a")[0].contents[0])
-            else:
-                try:
-                    temp_list.append(td_tag.contents[0])
-                except:
-                    temp_list.append("")
+        for j in td_tags:
+            temp_list.append(j.text.rstrip())
+        
 
     star_data.append(temp_list)
-    browser.find_element_by_xpath('//*[@id="primary_column"]/footer/div/div/div/nav/span[2]/a').click()
-    verify= False
     
     
     with open("scraper.csv","w") as file:
@@ -43,3 +35,6 @@ def scrape():
         writer.writerows(star_data)
     
 scrape()
+
+# df= pd.DataFrame(list(zip(list1,list2,list3,list4)), columns= ["column1", "column2","column3", "column4"])
+# df.to_csv("name.csv")
